@@ -22,7 +22,7 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       copy-paste-order-for-woocommerce
  * Domain Path:       /languages
- * GitHub Plugin URI: GH_REPO_URL
+ * GitHub Plugin URI: dream-encode/copy-paste-order-for-woocommerce
  * Release Asset:     true
  */
 
