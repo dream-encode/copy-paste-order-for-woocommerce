@@ -74,7 +74,9 @@ abstract class Copy_Paste_Order_For_Woocommerce_Abstract_API {
 	 * @return void
 	 */
 	public function rest_api_includes() {
-		include_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/rest-api/class-mmewoa-rest-authentication.php';
+		include_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/rest-api/class-copy-paste-order-for-woocommerce-rest-authentication.php';
+		include_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/rest-api/class-copy-paste-order-for-woocommerce-rest-response.php';
+		include_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/abstracts/abstract-rest-controller.php';
 	}
 
 	/**

@@ -1,0 +1,255 @@
+// Copy icon styling in billing column
+.cpofw-copy-icon {
+	display: none;
+	margin-left: 8px;
+	cursor: pointer;
+	font-size: 14px;
+	opacity: 0.7;
+	transition: opacity 0.2s ease;
+
+	&:hover {
+		opacity: 1;
+	}
+}
+
+// Show copy icon on row hover
+tr:hover .cpofw-copy-icon {
+	display: inline;
+}
+
+.cpofw-copy-order-container {
+	display: none !important;
+}
+
+.cpofw-copy-order-button {
+	color: #2271b1;
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 13px;
+
+	&:hover {
+		color: #135e96;
+	}
+
+	&:focus {
+		box-shadow: 0 0 0 1px #2271b1;
+		outline: none;
+	}
+}
+
+.cpofw-paste-order-button {
+	margin-left: 10px;
+
+	&:hover {
+		background-color: #f0f0f1;
+		border-color: #0a4b78;
+		color: #0a4b78;
+	}
+}
+
+.cpofw-copy-order-modal,
+.cpofw-paste-order-modal {
+	.components-modal__content {
+		max-width: 700px;
+		width: 90vw;
+		max-height: 80vh;
+		overflow-y: auto;
+	}
+
+	.components-modal__header {
+		border-bottom: 1px solid #ddd;
+		padding-bottom: 16px;
+		margin-bottom: 20px;
+	}
+}
+
+.cpofw-modal-loading {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	padding: 40px 20px;
+	text-align: center;
+
+	p {
+		margin: 0;
+		color: #757575;
+	}
+
+	.components-spinner {
+		margin: 0;
+	}
+}
+
+.cpofw-modal-actions {
+	display: flex;
+	gap: 12px;
+	justify-content: flex-end;
+	margin-top: 24px;
+	padding-top: 20px;
+	border-top: 1px solid #ddd;
+
+	.components-button {
+		min-height: 36px;
+
+		&.is-primary {
+			background: #2271b1;
+			border-color: #2271b1;
+
+			&:hover:not(:disabled) {
+				background: #135e96;
+				border-color: #135e96;
+			}
+		}
+	}
+}
+
+.cpofw-order-summary {
+	margin: 16px 0;
+
+	.components-card {
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		border: 1px solid #ddd;
+	}
+
+	.components-card__header {
+		background: #f8f9fa;
+		border-bottom: 1px solid #ddd;
+	}
+
+	.cpofw-order-details {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+
+		.components-h-stack {
+			padding: 8px 0;
+			border-bottom: 1px solid #f0f0f0;
+
+			&:last-child {
+				border-bottom: none;
+			}
+		}
+	}
+
+	.cpofw-billing-info {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		padding: 12px;
+		background: #f8f9fa;
+		border-radius: 4px;
+		border: 1px solid #e0e0e0;
+	}
+
+	.cpofw-line-items {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		max-height: 250px;
+		overflow-y: auto;
+		padding: 12px;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+		background: #fafafa;
+
+		&::-webkit-scrollbar {
+			width: 6px;
+		}
+
+		&::-webkit-scrollbar-track {
+			background: #f1f1f1;
+			border-radius: 3px;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background: #c1c1c1;
+			border-radius: 3px;
+
+			&:hover {
+				background: #a8a8a8;
+			}
+		}
+
+		.components-h-stack {
+			padding: 8px;
+			background: white;
+			border-radius: 3px;
+			border: 1px solid #e0e0e0;
+
+			&:hover {
+				border-color: #c0c0c0;
+			}
+		}
+	}
+}
+
+// Ensure paste button container is positioned correctly
+#cpofw-paste-order-container {
+	display: inline-block;
+}
+
+// Loading states
+.cpofw-loading {
+	opacity: 0.6;
+	pointer-events: none;
+
+	&::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(255, 255, 255, 0.7);
+		z-index: 1;
+	}
+}
+
+// Success states
+.components-notice.is-success {
+	border-left-color: #00a32a;
+
+	.components-notice__content {
+		color: #1e1e1e;
+	}
+}
+
+// Error states
+.components-notice.is-error {
+	border-left-color: #d63638;
+
+	.components-notice__content {
+		color: #1e1e1e;
+	}
+}
+
+// Responsive design
+@media (max-width: 768px) {
+	.cpofw-copy-order-modal,
+	.cpofw-paste-order-modal {
+		.components-modal__content {
+			width: 95vw;
+			max-height: 90vh;
+		}
+	}
+
+	.cpofw-modal-actions {
+		flex-direction: column-reverse;
+
+		.components-button {
+			width: 100%;
+			justify-content: center;
+		}
+	}
+
+	.cpofw-order-details {
+		.components-h-stack {
+			flex-direction: column;
+			align-items: flex-start !important;
+			gap: 4px;
+		}
+	}
+}

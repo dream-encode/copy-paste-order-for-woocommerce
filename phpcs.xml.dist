@@ -9,6 +9,7 @@
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 	<exclude-pattern>*/libraries/*</exclude-pattern>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/assets/dist/*</exclude-pattern>
 
 	<config name="testVersion" value="7.4-"/>
 
@@ -39,7 +40,7 @@
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<!-- Value: replace the function, class, and variable prefixes used. Separate multiple prefixes with a comma. -->
-			<property name="prefixes" type="array" value="cpofw, copy_paste_order_for_woocommerce, Copy_Paste_Order_For_Woocommerce"/>
+			<property name="prefixes" type="array" value="cpofw, copy_paste_order_for_woocommerce, Copy_Paste_Order_For_Woocommerce, dream-encode/copy-paste-order-for-woocommerce" />
 		</properties>
 	</rule>
 	<rule ref="WordPress.WP.I18n">

@@ -1,23 +1,22 @@
 <?php
 /**
-/**
- * Class Copy_Paste_Order_For_Woocommerce
+ * Class Copy_Paste_Order_For_Woocommerce_Upgrader
  *
  * @since 1.0.0
  */
 
-namespace Dream_Encode\Copy_Paste_Order_WooCommerce\Core\Install;
-
-use Dream_Encode\Copy_Paste_Order_WooCommerce\Core\Copy_Paste_Order_For_Woocommerce_Functions;
+namespace Dream_Encode\Copy_Paste_Order_WooCommerce\Core\Upgrade;
 
 defined( 'ABSPATH' ) || exit;
 
+use Dream_Encode\Copy_Paste_Order_WooCommerce\Core\Log\Copy_Paste_Order_For_Woocommerce_Upgrader_Logger;
+
 /**
- * Class Copy_Paste_Order_For_Woocommerce
+ * Class Copy_Paste_Order_For_Woocommerce_Upgrader
  *
  * @since 1.0.0
  */
-class Copy_Paste_Order_For_Woocommerce {
+class Copy_Paste_Order_For_Woocommerce_Upgrader {
 
 	/**
 	 * DB updates and callbacks that need to be run per version.
@@ -70,7 +69,7 @@ class Copy_Paste_Order_For_Woocommerce {
 	 * @return void
 	 */
 	public static function run_update_callback( $update_callback ) {
-		include_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/copy-paste-order-for-woocommerce-update-functions.php';
+		include_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/upgrade/copy-paste-order-for-woocommerce-upgrader-functions.php';
 
 		if ( is_callable( $update_callback ) ) {
 			self::run_update_callback_start( $update_callback );
@@ -89,7 +88,7 @@ class Copy_Paste_Order_For_Woocommerce {
 	 * @return void
 	 */
 	protected static function run_update_callback_start( $callback ) {
-		cpofw_maybe_define_constant( 'copy_paste_order_for_woocommerce_UPDATING', true );
+		cpofw_maybe_define_constant( 'CPOFW_UPDATING', true );
 	}
 
 	/**
@@ -122,20 +121,39 @@ class Copy_Paste_Order_For_Woocommerce {
 			return;
 		}
 
+		include_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/log/class-copy-paste-order-for-woocommerce-upgrader-logger.php';
+
+		Copy_Paste_Order_For_Woocommerce_Upgrader_Logger::log(
+			__( '=================== Beginning Install ===================', 'copy-paste-order-for-woocommerce' )
+		);
+
 		// If we made it here nothing is running yet, lets set the transient now.
 		set_transient( 'cpofw_installing', 'yes', MINUTE_IN_SECONDS * 10 );
 
-		cpofw_maybe_define_constant( 'copy_paste_order_for_woocommerce_INSTALLING', true );
+		cpofw_maybe_define_constant( 'CPOFW_INSTALLING', true );
 
 		self::create_tables();
 
-		self::create_options();
+		self::create_default_options();
 
 		self::update_plugin_version();
 
 		self::maybe_update_db_version();
 
 		delete_transient( 'cpofw_installing' );
+
+		Copy_Paste_Order_For_Woocommerce_Upgrader_Logger::log(
+			__( '=================== End Install ===================', 'copy-paste-order-for-woocommerce' )
+		);
+	}
+
+	/**
+	 * Create default options.
+	 *
+	 * @since  1.0.0
+	 * @return void
+	 */
+	protected static function create_default_options() {
 	}
 
 	/**
@@ -167,13 +185,21 @@ class Copy_Paste_Order_For_Woocommerce {
 	 * @return boolean
 	 */
 	public static function needs_db_update() {
+		Copy_Paste_Order_For_Woocommerce_Upgrader_Logger::log(
+			__( 'Checking if updates are needed for this version...', 'copy-paste-order-for-woocommerce' )
+		);
+
 		$updates = self::get_db_update_callbacks();
 
 		if ( count( $updates ) < 1 ) {
+			Copy_Paste_Order_For_Woocommerce_Upgrader_Logger::log(
+				__( 'No updates found.', 'copy-paste-order-for-woocommerce' )
+			);
+
 			return false;
 		}
 
-		$current_db_version = get_option( 'cpofw_plugin_db_version', null );
+		$current_db_version = get_option( 'cpofw_database_version', null );
 
 		$update_versions    = array_keys( $updates );
 
@@ -191,6 +217,10 @@ class Copy_Paste_Order_For_Woocommerce {
 	 */
 	private static function maybe_update_db_version() {
 		if ( self::needs_db_update() ) {
+			Copy_Paste_Order_For_Woocommerce_Upgrader_Logger::log(
+				__( 'Version requires updates.', 'copy-paste-order-for-woocommerce' )
+			);
+
 			self::update();
 		} else {
 			self::update_db_version();
@@ -204,7 +234,7 @@ class Copy_Paste_Order_For_Woocommerce {
 	 * @return void
 	 */
 	private static function update_plugin_version() {
-		update_option( 'cpofw_plugin_version', COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_VERSION );
+		update_option( 'cpofw_plugin_version', COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_VERSION, true );
 	}
 
 	/**
@@ -224,21 +254,74 @@ class Copy_Paste_Order_For_Woocommerce {
 	 * @return void
 	 */
 	private static function update() {
-		$current_db_version = get_option( 'cpofw_plugin_db_version' );
+		Copy_Paste_Order_For_Woocommerce_Upgrader_Logger::log(
+			__( 'Checking updates...', 'copy-paste-order-for-woocommerce' )
+		);
+
+		$current_db_version = get_option( 'cpofw_database_version' );
+		$loop               = 0;
+
+		Copy_Paste_Order_For_Woocommerce_Upgrader_Logger::log(
+			sprintf(
+				/* translators: %s current database version. */
+				__( 'Current database version: %s', 'copy-paste-order-for-woocommerce' ),
+				$current_db_version
+			)
+		);
 
 		foreach ( self::get_db_update_callbacks() as $version => $update_callbacks ) {
 			if ( version_compare( $current_db_version, $version, '<' ) ) {
+				Copy_Paste_Order_For_Woocommerce_Upgrader_Logger::log(
+					sprintf(
+						/* translators: %s current database version. */
+						__( 'Parsing needed updates for version %s', 'copy-paste-order-for-woocommerce' ),
+						$version
+					)
+				);
+
 				foreach ( $update_callbacks as $update_callback ) {
-					$update_callback();
+					if ( as_has_scheduled_action( 'cpofw_run_update_callback', array( $update_callback ), 'copy-paste-order-for-woocommerce' ) ) {
+						continue;
+					}
+
+					as_schedule_single_action(
+						time() + $loop,
+						'cpofw_run_update_callback',
+						array(
+							$update_callback,
+						),
+						'copy-paste-order-for-woocommerce'
+					);
+
+					Copy_Paste_Order_For_Woocommerce_Upgrader_Logger::log(
+						sprintf(
+							/* translators: %s update hook. */
+							__( 'Scheduled async update for `%s`', 'copy-paste-order-for-woocommerce' ),
+							$update_callback
+						)
+					);
+
+					$loop++;
 				}
 			}
 		}
 
 		// After the callbacks finish, update the db version to the current plugin version.
-		$current_db_define_version = COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_VERSION;
+		$current_db_define_version = COPY_PASTE_ORDER_FOR_WOOCOMMERCE_DATABASE_VERSION;
 
-		if ( version_compare( $current_db_version, $current_db_define_version, '<' ) ) {
-			self::update_db_version( $current_db_define_version );
+		if ( version_compare( $current_db_version, $current_db_define_version, '<' ) && ! as_has_scheduled_action( 'cpofw_update_db_to_current_version', array(), 'copy-paste-order-for-woocommerce' ) ) {
+			as_schedule_single_action(
+				time() + $loop,
+				'cpofw_update_db_to_current_version',
+				array(
+					$current_db_define_version,
+				),
+				'copy-paste-order-for-woocommerce'
+			);
+
+			Copy_Paste_Order_For_Woocommerce_Upgrader_Logger::log(
+				__( 'Scheduled async database version update.', 'copy-paste-order-for-woocommerce' )
+			);
 		}
 	}
 
@@ -250,25 +333,16 @@ class Copy_Paste_Order_For_Woocommerce {
 	 * @return void
 	 */
 	public static function update_db_version( $version = null ) {
-		update_option( 'cpofw_plugin_db_version', is_null( $version ) ? COPY_PASTE_ORDER_FOR_WOOCOMMERCE_DATABASE_VERSION : $version );
-	}
+		update_option( 'cpofw_database_version', is_null( $version ) ? COPY_PASTE_ORDER_FOR_WOOCOMMERCE_DATABASE_VERSION : $version, true );
 
-	/**
-	 * Default options.
-	 *
-	 * Sets up the default options used on the settings page.
-	 *
-	 * @since 1.0.0
-	 * @return void
-	 */
-	private static function create_options() {
-		if ( ! get_option( 'copy_paste_order_for_woocommerce_settings' ) ) {
-			$defaults = array();
-
-			add_option( 'copy_paste_order_for_woocommerce_settings', $defaults );
-		}
+		Copy_Paste_Order_For_Woocommerce_Upgrader_Logger::log(
+			sprintf(
+				/* translators: %s current database version. */
+				__( 'Updated database version to %s.', 'copy-paste-order-for-woocommerce' ),
+				$version
+			)
+		);
 	}
-	/**
 
 	/**
 	 * Set up the database tables which the plugin needs to function.
@@ -287,7 +361,11 @@ class Copy_Paste_Order_For_Woocommerce {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
-		dbDelta( self::get_schema() );
+		$schema = self::get_schema();
+
+		if ( ! empty( $schema ) ) {
+			dbDelta( $schema );
+		}
 	}
 
 	/**
@@ -296,7 +374,7 @@ class Copy_Paste_Order_For_Woocommerce {
 	 * Changing indexes may cause duplicate index notices in logs due to https://core.trac.wordpress.org/ticket/34870 but dropping
 	 * indexes first causes too much load on some servers/larger DB.
 	 *
-	 * When adding or removing a table, make sure to update the list of tables in Max_Marine_Enhanced_product_Changelogs_Install::get_tables().
+	 * When adding or removing a table, make sure to update the list of tables in Copy_Paste_Order_For_Woocommerce_Upgrader::get_tables().
 	 *
 	 * @since  1.0.0
 	 * @global WPDB  $wpdb  WordPress database instance global.
@@ -305,11 +383,18 @@ class Copy_Paste_Order_For_Woocommerce {
 	private static function get_schema() {
 		global $wpdb;
 
-		$collate = '';
+		$charset_collate = '';
 
 		if ( $wpdb->has_cap( 'collation' ) ) {
-			$collate = $wpdb->get_charset_collate();
+			$charset_collate = $wpdb->get_charset_collate();
 		}
+
+		/*
+		 * Indexes have a maximum size of 767 bytes. Historically, we haven't need to be concerned about that.
+		 * As of 4.2, however, we moved to utf8mb4, which uses 4 bytes per character. This means that an index which
+		 * used to have room for floor(767/3) = 255 characters, now only has room for floor(767/4) = 191 characters.
+		 */
+		$max_index_length = 191;
 
 		$tables = "";
 
@@ -327,7 +412,13 @@ class Copy_Paste_Order_For_Woocommerce {
 	public static function get_tables() {
 		global $wpdb;
 
+		$table_names = array();
+
 		$tables = array();
+
+		foreach ( $table_names as $table_name ) {
+			$tables[ $table_name ] = $wpdb->prefix . $table_name;
+		}
 
 		return $tables;
 	}
@@ -345,7 +436,12 @@ class Copy_Paste_Order_For_Woocommerce {
 		$tables = static::get_tables();
 
 		foreach ( $tables as $name => $table ) {
-			$wpdb->query( "DROP TABLE IF EXISTS {$table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$wpdb->query(
+				$wpdb->prepare(
+					'DROP TABLE IF EXISTS %i',
+					$table
+				)
+			);
 		}
 	}
 
@@ -369,4 +465,4 @@ class Copy_Paste_Order_For_Woocommerce {
 	}
 }
 
-Copy_Paste_Order_For_Woocommerce::init();
+Copy_Paste_Order_For_Woocommerce_Upgrader::init();

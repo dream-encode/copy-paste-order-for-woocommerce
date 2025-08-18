@@ -12,9 +12,9 @@
  * @package           Copy_Paste_Order_For_Woocommerce
  *
  * @wordpress-plugin
- * Plugin Name:       Copy PLUGIN_NAME Paste Order for WooCommerce
+ * Plugin Name:       Copy & Paste Order for WooCommerce
  * Plugin URI:        https://maxmarineelectronics.com
- * Description:       A small plugin [D[D[D[D[D[D[Dutility plugin to help copy WooCommerce orders from one site to another with justa couple of clicks.
+ * Description:       A small utility plugin to help copy WooCommerce orders from one site to another with just a couple of clicks.
  * Version:           1.0.0
  * Author:            David Baumwald
  * Author URI:        https://dream-encode.com
@@ -23,13 +23,12 @@
  * Text Domain:       copy-paste-order-for-woocommerce
  * Domain Path:       /languages
  * GitHub Plugin URI: dream-encode/copy-paste-order-for-woocommerce
+ * Primary Branch:    main
  * Release Asset:     true
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
+defined( 'WPINC' ) || die;
 
 /**
  * Constants
@@ -44,6 +43,7 @@ require_once 'includes/copy-paste-order-for-woocommerce-constants.php';
  */
 function copy_paste_order_for_woocommerce_activate() {
 	require_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/class-copy-paste-order-for-woocommerce-activator.php';
+
 	Dream_Encode\Copy_Paste_Order_WooCommerce\Core\Copy_Paste_Order_For_Woocommerce_Activator::activate();
 }
 
@@ -55,6 +55,7 @@ function copy_paste_order_for_woocommerce_activate() {
  */
 function copy_paste_order_for_woocommerce_deactivate() {
 	require_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/class-copy-paste-order-for-woocommerce-deactivator.php';
+
 	Dream_Encode\Copy_Paste_Order_WooCommerce\Core\Copy_Paste_Order_For_Woocommerce_Deactivator::deactivate();
 }
 

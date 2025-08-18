@@ -18,6 +18,7 @@ use Dream_Encode\Copy_Paste_Order_WooCommerce\Core\Copy_Paste_Order_For_Woocomme
 use Dream_Encode\Copy_Paste_Order_WooCommerce\Core\Copy_Paste_Order_For_Woocommerce_I18n;
 use Dream_Encode\Copy_Paste_Order_WooCommerce\Admin\Copy_Paste_Order_For_Woocommerce_Admin;
 use Dream_Encode\Copy_Paste_Order_WooCommerce\Frontend\Copy_Paste_Order_For_Woocommerce_Public;
+use Dream_Encode\Copy_Paste_Order_WooCommerce\Core\Upgrade\Copy_Paste_Order_For_Woocommerce_Upgrader;
 
 /**
  * The core plugin class.
@@ -77,8 +78,14 @@ class Copy_Paste_Order_For_Woocommerce {
 		$this->load_dependencies();
 		$this->define_tables();
 		$this->set_locale();
-		$this->define_admin_hooks();
+
+		// Always load public hooks (includes REST API)
 		$this->define_public_hooks();
+
+		// Only load admin hooks when in admin area
+		if ( is_admin() ) {
+			$this->define_admin_hooks();
+		}
 	}
 
 	/**
@@ -99,10 +106,17 @@ class Copy_Paste_Order_For_Woocommerce {
 	 * @return void
 	 */
 	private function load_dependencies() {
+
 		/**
-		 * Installer.
+		 * Logger
 		 */
-		require_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/install/class-copy-paste-order-for-woocommerce-install.php';
+		require_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/abstracts/abstract-wc-logger.php';
+		require_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/log/class-copy-paste-order-for-woocommerce-wc-logger.php';
+
+		/**
+		 * Upgrader
+		 */
+		require_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/upgrade/class-copy-paste-order-for-woocommerce-upgrader.php';
 
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
@@ -115,6 +129,14 @@ class Copy_Paste_Order_For_Woocommerce {
 		 * of the plugin.
 		 */
 		require_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/class-copy-paste-order-for-woocommerce-i18n.php';
+
+		/**
+		 * REST API
+		 */
+		require_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/rest-api/class-copy-paste-order-for-woocommerce-rest-response.php';
+		require_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/abstracts/abstract-rest-api.php';
+		require_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/abstracts/abstract-rest-controller.php';
+		require_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/rest-api/class-copy-paste-order-for-woocommerce-core-api.php';
 
 		/**
 		 * Default filters.
@@ -131,6 +153,8 @@ class Copy_Paste_Order_For_Woocommerce {
 		 * side of the site.
 		 */
 		require_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'public/class-copy-paste-order-for-woocommerce-public.php';
+
+		Copy_Paste_Order_For_Woocommerce_Upgrader::init();
 
 		$this->loader = new Copy_Paste_Order_For_Woocommerce_Loader();
 	}
@@ -158,7 +182,7 @@ class Copy_Paste_Order_For_Woocommerce {
 	 * @return void
 	 */
 	public function define_tables() {
-		Copy_Paste_Order_For_Woocommerce_Install::define_tables();
+		Copy_Paste_Order_For_Woocommerce_Upgrader::define_tables();
 	}
 
 	/**
@@ -173,6 +197,11 @@ class Copy_Paste_Order_For_Woocommerce {
 		$plugin_admin = new Copy_Paste_Order_For_Woocommerce_Admin();
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+
+		$this->loader->add_action( 'admin_notices', $plugin_admin, 'add_paste_order_button' );
+
+		$this->loader->add_action( 'admin_footer', $plugin_admin, 'add_copy_order_container' );
 	}
 
 	/**
@@ -186,8 +215,7 @@ class Copy_Paste_Order_For_Woocommerce {
 	private function define_public_hooks() {
 		$plugin_public = new Copy_Paste_Order_For_Woocommerce_Public();
 
-		// Before updates.
-		$this->loader->add_action( 'example_function', $plugin_public, 'example_function' );
+		$this->loader->add_action( 'init', $plugin_public, 'rest_init' );
 	}
 
 	/**

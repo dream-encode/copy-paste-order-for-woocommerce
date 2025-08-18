@@ -11,6 +11,8 @@
 
 namespace Dream_Encode\Copy_Paste_Order_WooCommerce\Frontend;
 
+use Dream_Encode\Copy_Paste_Order_WooCommerce\Core\RestApi\Copy_Paste_Order_For_Woocommerce_Core_API;
+
 /**
  * The public-facing functionality of the plugin.
  *
@@ -24,14 +26,12 @@ namespace Dream_Encode\Copy_Paste_Order_WooCommerce\Frontend;
 class Copy_Paste_Order_For_Woocommerce_Public {
 
 	/**
-	 * Example function.
+	 * Initialize rest api instances.
 	 *
 	 * @since  1.0.0
-	 * @access public
-	 * @param  string  $param  First function parameter.
-	 * @return string
+	 * @return void
 	 */
-	public function example_function( $param ) {
-		return $param;
+	public function rest_init() {
+		$api = new Copy_Paste_Order_For_Woocommerce_Core_API();
 	}
 }

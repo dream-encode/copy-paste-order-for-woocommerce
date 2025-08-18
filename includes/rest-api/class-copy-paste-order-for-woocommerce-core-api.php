@@ -28,7 +28,7 @@ class Copy_Paste_Order_For_Woocommerce_Core_API extends Copy_Paste_Order_For_Woo
 
 		$path_version = 'includes/rest-api' . DIRECTORY_SEPARATOR . $this->version . DIRECTORY_SEPARATOR . 'frontend';
 
-		include_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . $path_version . '/class-copy-paste-order-for-woocommerce-rest-user-controller.php';
+		include_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . $path_version . '/class-copy-paste-order-for-woocommerce-rest-order-controller.php';
 	}
 
 	/**
@@ -39,7 +39,7 @@ class Copy_Paste_Order_For_Woocommerce_Core_API extends Copy_Paste_Order_For_Woo
 	 */
 	public function rest_api_register_routes() {
 		$controllers = array(
-			'Copy_Paste_Order_For_Woocommerce_REST_User_Controller',
+			'Copy_Paste_Order_For_Woocommerce_REST_Order_Controller',
 		);
 
 		$this->controllers = $controllers;

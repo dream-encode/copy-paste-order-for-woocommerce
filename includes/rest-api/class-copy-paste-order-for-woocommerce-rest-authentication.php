@@ -227,7 +227,7 @@ class Copy_Paste_Order_For_Woocommerce_REST_Authentication {
 	 * @return bool
 	 */
 	public static function check_admin_permission() {
-		return current_user_can( 'administrator' );
+		return current_user_can( 'manage_options' );
 	}
 
 	/**

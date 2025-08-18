@@ -11,7 +11,7 @@
 
 namespace Dream_Encode\Copy_Paste_Order_WooCommerce\Core;
 
-use Dream_Encode\Copy_Paste_Order_WooCommerce\Core\Install\Copy_Paste_Order_For_Woocommerce_Install;
+use Dream_Encode\Copy_Paste_Order_WooCommerce\Core\Upgrade\Copy_Paste_Order_For_Woocommerce_Upgrader;
 
 /**
  * Fired during plugin activation.
@@ -33,6 +33,8 @@ class Copy_Paste_Order_For_Woocommerce_Activator {
 	 * @return void
 	 */
 	public static function activate() {
-		Copy_Paste_Order_For_Woocommerce_Install::install();
+		require_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/upgrade/class-copy-paste-order-for-woocommerce-upgrader.php';
+
+		Copy_Paste_Order_For_Woocommerce_Upgrader::install();
 	}
 }
