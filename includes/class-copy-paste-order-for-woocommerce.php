@@ -79,10 +79,8 @@ class Copy_Paste_Order_For_Woocommerce {
 		$this->define_tables();
 		$this->set_locale();
 
-		// Always load public hooks (includes REST API)
 		$this->define_public_hooks();
 
-		// Only load admin hooks when in admin area
 		if ( is_admin() ) {
 			$this->define_admin_hooks();
 		}

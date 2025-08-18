@@ -60,8 +60,7 @@ class Dream_Encode_Copy_Paste_Order_WooCommerce_Abstract_WC_Logger {
 			return;
 		}
 
-		// Next, check the plugin setting for the desired log level.
-		$log_level_setting = max_marine_data_migrations_get_plugin_setting( 'plugin_log_level', 'off' );
+		$log_level_setting = cpofw_get_plugin_setting( 'plugin_log_level', 'off' );
 
 		if ( 'off' === $log_level_setting || ! in_array( $log_level_setting, static::$log_levels, true ) ) {
 			return;
@@ -79,7 +78,6 @@ class Dream_Encode_Copy_Paste_Order_WooCommerce_Abstract_WC_Logger {
 			$loggable_log_levels = array_slice( static::$log_levels, 0, intval( $level_index ) + 1 );
 		}
 
-		// Check if the level is a loggable level.
 		if ( ! is_array( $loggable_log_levels ) || ! in_array( $level, $loggable_log_levels, true ) ) {
 			return;
 		}
@@ -89,7 +87,7 @@ class Dream_Encode_Copy_Paste_Order_WooCommerce_Abstract_WC_Logger {
 			error_log(
 				sprintf(
 					/* translators: 1: WC_Logger class name, 2: `log` method name.`. */
-					__( '%1$s->%2$s depends on `wc_get_logger` which is bundled with the WooCommerce plugin.', 'max-marine-data-migrations' ),
+					__( '%1$s->%2$s depends on `wc_get_logger` which is bundled with the WooCommerce plugin.', 'copy-paste-order-for-woocommerce' ),
 					__CLASS__,
 					__METHOD__
 				)

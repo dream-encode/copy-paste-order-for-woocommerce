@@ -328,7 +328,7 @@ function cpofw_get_json_order_data( $order ) {
 	 * @param  array     $order_data  The order data array.
 	 * @param  WC_Order  $order       The original order object.
 	 */
-	$json_data = apply_filters( 'dream-encode/copy-paste-order-for-woocommerce/json-encoded-data', $json_data, $order_data, $order );
+	$json_data = apply_filters( 'dream-encode/copy-paste-order-for-woocommerce/json-encoded-data', (string) $json_data, $order_data, $order );
 
 	return $json_data;
 }
@@ -338,7 +338,7 @@ function cpofw_get_json_order_data( $order ) {
  *
  * @since  1.0.0
  * @param  array  $order_data  Order data to validate.
- * @return array
+ * @return array{valid: bool, errors: string[]}
  */
 function cpofw_validate_order_data( $order_data ) {
 	$errors = array();
@@ -351,7 +351,11 @@ function cpofw_validate_order_data( $order_data ) {
 
 	foreach ( $required_fields as $field ) {
 		if ( ! isset( $order_data[ $field ] ) ) {
-			$errors[] = sprintf( __( 'Missing required field: %s', 'copy-paste-order-for-woocommerce' ), $field );
+			$errors[] = sprintf(
+				/* translators: %s: Missing field name. */
+				__( 'Missing required field: %s', 'copy-paste-order-for-woocommerce' ),
+				$field
+			);
 		}
 	}
 
@@ -372,7 +376,7 @@ function cpofw_validate_order_data( $order_data ) {
  *
  * @since  1.0.0
  * @param  array  $order_data  Order data to create from.
- * @return array
+ * @return array{success: bool, order_id?: int, edit_url?: string, message: string}
  */
 function cpofw_create_order_from_data( $order_data ) {
 	try {
@@ -431,7 +435,7 @@ function cpofw_create_order_from_data( $order_data ) {
 					$date_value = $order_data[ $date_property ];
 
 					if ( is_string( $date_value ) ) {
-						$date_value = date( 'Y-m-d H:i:s', strtotime( $date_value ) );
+						$date_value = cpofw_get_mysql_datetime( strtotime( $date_value ) );
 					} elseif ( is_array( $date_value ) && isset( $date_value['date'] ) ) {
 						$date_value = $date_value['date'];
 					}
@@ -488,8 +492,16 @@ function cpofw_create_order_from_data( $order_data ) {
 
 				if ( isset( $line_item_data['meta_data'] ) && is_array( $line_item_data['meta_data'] ) ) {
 					foreach ( $line_item_data['meta_data'] as $meta ) {
-						$key   = ( is_object( $meta ) ) ? $meta->key : ( isset( $meta['key'] ) ? $meta['key'] : null );
-						$value = ( is_object( $meta ) ) ? $meta->value : ( isset( $meta['value'] ) ? $meta['value'] : null );
+						$key   = null;
+						$value = null;
+
+						if ( is_object( $meta ) && property_exists( $meta, 'key' ) && property_exists( $meta, 'value' ) ) {
+							$key   = $meta->key;
+							$value = $meta->value;
+						} elseif ( is_array( $meta ) && isset( $meta['key'] ) ) {
+							$key   = $meta['key'];
+							$value = $meta['value'] ?? null;
+						}
 
 						if ( $key && ! is_null( $value ) ) {
 							$item->add_meta_data( $key, $value );
@@ -521,8 +533,16 @@ function cpofw_create_order_from_data( $order_data ) {
 
 				if ( isset( $shipping_data['meta_data'] ) && is_array( $shipping_data['meta_data'] ) ) {
 					foreach ( $shipping_data['meta_data'] as $meta ) {
-						$key   = ( is_object( $meta ) ) ? $meta->key : ( isset( $meta['key'] ) ? $meta['key'] : null );
-						$value = ( is_object( $meta ) ) ? $meta->value : ( isset( $meta['value'] ) ? $meta['value'] : null );
+						$key   = null;
+						$value = null;
+
+						if ( is_object( $meta ) && property_exists( $meta, 'key' ) && property_exists( $meta, 'value' ) ) {
+							$key   = $meta->key;
+							$value = $meta->value;
+						} elseif ( is_array( $meta ) && isset( $meta['key'] ) ) {
+							$key   = $meta['key'];
+							$value = $meta['value'] ?? null;
+						}
 
 						if ( $key && ! is_null( $value ) ) {
 							$item->add_meta_data( $key, $value );
@@ -553,8 +573,16 @@ function cpofw_create_order_from_data( $order_data ) {
 
 				if ( isset( $fee_data['meta_data'] ) && is_array( $fee_data['meta_data'] ) ) {
 					foreach ( $fee_data['meta_data'] as $meta ) {
-						$key   = ( is_object( $meta ) ) ? $meta->key : ( isset( $meta['key'] ) ? $meta['key'] : null );
-						$value = ( is_object( $meta ) ) ? $meta->value : ( isset( $meta['value'] ) ? $meta['value'] : null );
+						$key   = null;
+						$value = null;
+
+						if ( is_object( $meta ) && property_exists( $meta, 'key' ) && property_exists( $meta, 'value' ) ) {
+							$key   = $meta->key;
+							$value = $meta->value;
+						} elseif ( is_array( $meta ) && isset( $meta['key'] ) ) {
+							$key   = $meta['key'];
+							$value = $meta['value'] ?? null;
+						}
 
 						if ( $key && ! is_null( $value ) ) {
 							$item->add_meta_data( $key, $value );
@@ -598,8 +626,16 @@ function cpofw_create_order_from_data( $order_data ) {
 
 				if ( isset( $coupon_data['meta_data'] ) && is_array( $coupon_data['meta_data'] ) ) {
 					foreach ( $coupon_data['meta_data'] as $meta ) {
-						$key   = ( is_object( $meta ) ) ? $meta->key : ( isset( $meta['key'] ) ? $meta['key'] : null );
-						$value = ( is_object( $meta ) ) ? $meta->value : ( isset( $meta['value'] ) ? $meta['value'] : null );
+						$key   = null;
+						$value = null;
+
+						if ( is_object( $meta ) && property_exists( $meta, 'key' ) && property_exists( $meta, 'value' ) ) {
+							$key   = $meta->key;
+							$value = $meta->value;
+						} elseif ( is_array( $meta ) && isset( $meta['key'] ) ) {
+							$key   = $meta['key'];
+							$value = $meta['value'] ?? null;
+						}
 
 						if ( $key && ! is_null( $value ) ) {
 							$item->add_meta_data( $key, $value );
@@ -646,8 +682,16 @@ function cpofw_create_order_from_data( $order_data ) {
 
 				if ( isset( $tax_data['meta_data'] ) && is_array( $tax_data['meta_data'] ) ) {
 					foreach ( $tax_data['meta_data'] as $meta ) {
-						$key   = ( is_object( $meta ) ) ? $meta->key : ( isset( $meta['key'] ) ? $meta['key'] : null );
-						$value = ( is_object( $meta ) ) ? $meta->value : ( isset( $meta['value'] ) ? $meta['value'] : null );
+						$key   = null;
+						$value = null;
+
+						if ( is_object( $meta ) && property_exists( $meta, 'key' ) && property_exists( $meta, 'value' ) ) {
+							$key   = $meta->key;
+							$value = $meta->value;
+						} elseif ( is_array( $meta ) && isset( $meta['key'] ) ) {
+							$key   = $meta['key'];
+							$value = $meta['value'] ?? null;
+						}
 
 						if ( $key && ! is_null( $value ) ) {
 							$item->add_meta_data( $key, $value );
@@ -671,8 +715,16 @@ function cpofw_create_order_from_data( $order_data ) {
 
 		if ( isset( $order_data['meta_data'] ) && is_array( $order_data['meta_data'] ) ) {
 			foreach ( $order_data['meta_data'] as $meta ) {
-				$key   = ( is_object( $meta ) ) ? $meta->key : ( isset( $meta['key'] ) ? $meta['key'] : null );
-				$value = ( is_object( $meta ) ) ? $meta->value : ( isset( $meta['value'] ) ? $meta['value'] : null );
+				$key   = null;
+				$value = null;
+
+				if ( is_object( $meta ) && property_exists( $meta, 'key' ) && property_exists( $meta, 'value' ) ) {
+					$key   = $meta->key;
+					$value = $meta->value;
+				} elseif ( is_array( $meta ) && isset( $meta['key'] ) ) {
+					$key   = $meta['key'];
+					$value = $meta['value'] ?? null;
+				}
 
 				if ( $key && ! is_null( $value ) ) {
 					if ( str_starts_with( $key, '_' ) && in_array( $key, array( '_order_key', '_order_stock_reduced' ), true ) ) {
@@ -741,7 +793,6 @@ function cpofw_create_order_from_data( $order_data ) {
 				$order->get_id()
 			),
 		);
-
 	} catch ( Exception $e ) {
 		return array(
 			'success' => false,

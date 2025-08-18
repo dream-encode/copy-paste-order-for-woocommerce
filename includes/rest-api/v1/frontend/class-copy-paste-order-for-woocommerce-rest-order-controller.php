@@ -139,11 +139,17 @@ class Copy_Paste_Order_For_Woocommerce_REST_Order_Controller extends Copy_Paste_
 			$result = cpofw_create_order_from_data( $order_data );
 
 			if ( $result['success'] ) {
-				$success = true;
-				$response->data = array(
-					'order_id' => $result['order_id'],
-					'edit_url' => $result['edit_url'],
-				);
+				$success           = true;
+				$response->data    = array();
+
+				if ( isset( $result['order_id'] ) ) {
+					$response->data['order_id'] = $result['order_id'];
+				}
+
+				if ( isset( $result['edit_url'] ) ) {
+					$response->data['edit_url'] = $result['edit_url'];
+				}
+
 				$response->message = $result['message'];
 			} else {
 				$response->message = $result['message'];

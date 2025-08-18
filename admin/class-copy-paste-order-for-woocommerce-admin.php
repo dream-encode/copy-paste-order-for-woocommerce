@@ -149,7 +149,7 @@ class Copy_Paste_Order_For_Woocommerce_Admin {
 
 		printf(
 			'<span class="cpofw-copy-icon" data-order-id="%d" title="%s">📋</span>',
-			$order_id,
+			absint( $order_id ),
 			esc_attr__( 'Copy Order', 'copy-paste-order-for-woocommerce' )
 		);
 	}

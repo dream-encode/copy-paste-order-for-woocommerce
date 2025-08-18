@@ -201,7 +201,7 @@ class Copy_Paste_Order_For_Woocommerce_Upgrader {
 
 		$current_db_version = get_option( 'cpofw_database_version', null );
 
-		$update_versions    = array_keys( $updates );
+		$update_versions = array_keys( $updates );
 
 		// @phpstan-ignore-next-line
 		usort( $update_versions, 'version_compare' );
@@ -396,7 +396,7 @@ class Copy_Paste_Order_For_Woocommerce_Upgrader {
 		 */
 		$max_index_length = 191;
 
-		$tables = "";
+		$tables = '';
 
 		return $tables;
 	}
@@ -416,7 +416,7 @@ class Copy_Paste_Order_For_Woocommerce_Upgrader {
 
 		$tables = array();
 
-		foreach ( $table_names as $table_name ) {
+		foreach ( $table_names as $table_name ) { // @phpstan-ignore-line Yes, this is an empty array now, but it might not be in the future.
 			$tables[ $table_name ] = $wpdb->prefix . $table_name;
 		}
 
