@@ -15,7 +15,6 @@
 namespace Dream_Encode\Copy_Paste_Order_WooCommerce\Core;
 
 use Dream_Encode\Copy_Paste_Order_WooCommerce\Core\Copy_Paste_Order_For_Woocommerce_Loader;
-use Dream_Encode\Copy_Paste_Order_WooCommerce\Core\Copy_Paste_Order_For_Woocommerce_I18n;
 use Dream_Encode\Copy_Paste_Order_WooCommerce\Admin\Copy_Paste_Order_For_Woocommerce_Admin;
 use Dream_Encode\Copy_Paste_Order_WooCommerce\Frontend\Copy_Paste_Order_For_Woocommerce_Public;
 use Dream_Encode\Copy_Paste_Order_WooCommerce\Core\Upgrade\Copy_Paste_Order_For_Woocommerce_Upgrader;
@@ -77,7 +76,6 @@ class Copy_Paste_Order_For_Woocommerce {
 
 		$this->load_dependencies();
 		$this->define_tables();
-		$this->set_locale();
 
 		$this->define_public_hooks();
 
@@ -123,12 +121,6 @@ class Copy_Paste_Order_For_Woocommerce {
 		require_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/class-copy-paste-order-for-woocommerce-loader.php';
 
 		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
-		require_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/class-copy-paste-order-for-woocommerce-i18n.php';
-
-		/**
 		 * REST API
 		 */
 		require_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/rest-api/class-copy-paste-order-for-woocommerce-rest-response.php';
@@ -155,22 +147,6 @@ class Copy_Paste_Order_For_Woocommerce {
 		Copy_Paste_Order_For_Woocommerce_Upgrader::init();
 
 		$this->loader = new Copy_Paste_Order_For_Woocommerce_Loader();
-	}
-
-	/**
-	 * Define the locale for this plugin for internationalization.
-	 *
-	 * Uses the Copy_Paste_Order_For_Woocommerce_I18n class in order to set the domain and to register the hook
-	 * with WordPress.
-	 *
-	 * @since  1.0.0
-	 * @access private
-	 * @return void
-	 */
-	private function set_locale() {
-		$plugin_i18n = new Copy_Paste_Order_For_Woocommerce_I18n();
-
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 	}
 
 	/**

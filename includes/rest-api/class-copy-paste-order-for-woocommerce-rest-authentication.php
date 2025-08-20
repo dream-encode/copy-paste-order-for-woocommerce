@@ -123,8 +123,8 @@ class Copy_Paste_Order_For_Woocommerce_REST_Authentication {
 			return false;
 		}
 
-		$user = $_SERVER['PHP_AUTH_USER'];
-		$pass = $_SERVER['PHP_AUTH_PW'];
+		$user = wp_unslash( $_SERVER['PHP_AUTH_USER'] );
+		$pass = wp_unslash( $_SERVER['PHP_AUTH_PW'] );
 
 		$authenticated = wp_authenticate_application_password( null, $user, $pass );
 
@@ -149,7 +149,7 @@ class Copy_Paste_Order_For_Woocommerce_REST_Authentication {
 		$rest_prefix = trailingslashit( rest_get_url_prefix() );
 		$request_uri = esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
 
-		return false !== strpos( $request_uri, $rest_prefix . 'max-marine/' );
+		return str_contains( $request_uri, $rest_prefix . 'dream-encode/copy-paste-order-for-woocommerce' );
 	}
 
 	/**
@@ -231,13 +231,23 @@ class Copy_Paste_Order_For_Woocommerce_REST_Authentication {
 	}
 
 	/**
-	 * Check permission if user is shop_manager.
+	 * Check permission if user is an editor or above.
 	 *
 	 * @since  1.0.0
 	 * @return bool
 	 */
 	public static function check_user_permission() {
 		return current_user_can( 'edit_posts' );
+	}
+
+	/**
+	 * Check permission if user is shop_a Shop Manager.
+	 *
+	 * @since  1.0.0
+	 * @return bool
+	 */
+	public static function check_shop_manager_permission() {
+		return current_user_can( 'manage_woocommerce' );
 	}
 }
 

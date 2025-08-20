@@ -19,7 +19,7 @@ class Copy_Paste_Order_For_Woocommerce_Abstract_REST_Controller extends WP_REST_
 	 * @access  public
 	 * @var     string   $namespace  The current namespace.
 	 */
-	public $namespace = 'max-marine/v1';
+	public $namespace = 'dream-encode/copy-paste-order-for-woocommerce/v1';
 
 	/**
 	 * The current rest_base.
@@ -78,7 +78,7 @@ class Copy_Paste_Order_For_Woocommerce_Abstract_REST_Controller extends WP_REST_
 	}
 
 	/**
-	 * Check user is Admin
+	 * Check user is Admin.
 	 *
 	 * @since  1.0.0
 	 * @return bool
@@ -88,12 +88,22 @@ class Copy_Paste_Order_For_Woocommerce_Abstract_REST_Controller extends WP_REST_
 	}
 
 	/**
-	 * Check user can do action
+	 * Check if user is an editor or above.
 	 *
 	 * @since  1.0.0
 	 * @return bool
 	 */
 	public function check_user_permission() {
 		return Copy_Paste_Order_For_Woocommerce_REST_Authentication::check_user_permission();
+	}
+
+	/**
+	 * Check if user is a Shop Manager.
+	 *
+	 * @since  1.0.0
+	 * @return bool
+	 */
+	public function check_shop_manager_permission() {
+		return Copy_Paste_Order_For_Woocommerce_REST_Authentication::check_shop_manager_permission();
 	}
 }

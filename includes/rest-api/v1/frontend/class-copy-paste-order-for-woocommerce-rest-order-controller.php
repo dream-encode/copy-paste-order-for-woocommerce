@@ -52,7 +52,7 @@ class Copy_Paste_Order_For_Woocommerce_REST_Order_Controller extends Copy_Paste_
 				array(
 					'methods'             => WP_REST_Server::CREATABLE,
 					'callback'            => array( $this, 'paste_order' ),
-					'permission_callback' => array( $this, 'permission_callback' ),
+					'permission_callback' => array( $this, 'check_shop_manager_permission' ),
 				),
 			),
 		);
