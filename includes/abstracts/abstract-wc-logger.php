@@ -60,28 +60,6 @@ class Dream_Encode_Copy_Paste_Order_WooCommerce_Abstract_WC_Logger {
 			return;
 		}
 
-		$log_level_setting = cpofw_get_plugin_setting( 'plugin_log_level', 'off' );
-
-		if ( 'off' === $log_level_setting || ! in_array( $log_level_setting, static::$log_levels, true ) ) {
-			return;
-		}
-
-		static $loggable_log_levels = false;
-
-		if ( false === $loggable_log_levels ) {
-			$level_index = array_search( $log_level_setting, static::$log_levels );
-
-			if ( false === $level_index ) {
-				return;
-			}
-
-			$loggable_log_levels = array_slice( static::$log_levels, 0, intval( $level_index ) + 1 );
-		}
-
-		if ( ! is_array( $loggable_log_levels ) || ! in_array( $level, $loggable_log_levels, true ) ) {
-			return;
-		}
-
 		if ( ! function_exists( 'wc_get_logger' ) ) {
 			// @phpcs:ignore
 			error_log(
