@@ -1,83 +1,37 @@
-/* global CPOFW */
+import apiFetch from '@wordpress/api-fetch'
 
 /**
- * Get localized data from the global CPOFW object
- */
-const getLocalizedData = () => {
-	if ( typeof CPOFW === 'undefined' ) {
-		console.error( 'CPOFW localized data not found' )
-		return {}
-	}
-	return CPOFW
-}
-
-/**
- * Get fetch options for GET requests
- */
-export const fetchGetOptions = () => {
-	const { NONCES } = getLocalizedData()
-	
-	return {
-		headers: {
-			'X-WP-Nonce': NONCES?.REST || ''
-		}
-	}
-}
-
-/**
- * Get fetch options for POST requests
- */
-export const fetchPostOptions = ( postData ) => {
-	const { NONCES } = getLocalizedData()
-	
-	return {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			'X-WP-Nonce': NONCES?.REST || ''
-		},
-		body: JSON.stringify( postData )
-	}
-}
-
-/**
- * API call to copy an order
+ * API call to copy an order.
+ *
+ * @since  1.0.0
+ * @param  {int}  orderId  The ID of the order to copy.
+ * @return {Promise}
  */
 export const apiCopyOrder = async ( orderId ) => {
-	try {
-		const response = await fetch(
-			`/wp-json/dream-encode/copy-paste-order-for-woocommerce/v1/order/${orderId}/copy`,
-			fetchGetOptions()
-		)
-		
-		if ( ! response.ok ) {
-			throw new Error( `HTTP error! status: ${response.status}` )
+	const response = await apiFetch(
+		{
+			path: `/copy-paste-order-for-woocommerce/v1/order/${ orderId }/copy`,
 		}
-		
-		return await response.json()
-	} catch ( error ) {
-		console.error( 'Error copying order:', error )
-		throw error
-	}
+	)
+
+	return await response.json()
 }
 
 /**
- * API call to paste/create an order
+ * API call to paste/create an order.
+ *
+ * @since  1.0.0
+ * @param  {Object}  orderData  The order data to paste.
+ * @return {Promise}
  */
 export const apiPasteOrder = async ( orderData ) => {
-	try {
-		const response = await fetch(
-			'/wp-json/dream-encode/copy-paste-order-for-woocommerce/v1/order/paste',
-			fetchPostOptions( orderData )
-		)
-		
-		if ( ! response.ok ) {
-			throw new Error( `HTTP error! status: ${response.status}` )
+	const response = await apiFetch(
+		{
+			path: '/copy-paste-order-for-woocommerce/v1/order/paste',
+			method: 'POST',
+			body: JSON.stringify( orderData ),
 		}
-		
-		return await response.json()
-	} catch ( error ) {
-		console.error( 'Error pasting order:', error )
-		throw error
-	}
+	)
+
+	return await response.json()
 }

@@ -32,7 +32,7 @@ class Copy_Paste_Order_For_Woocommerce_Admin {
 	 * @return void
 	 */
 	public function enqueue_styles() {
-		if ( ! cpofw_admin_current_screen_has_enqueued_assets() ) {
+		if ( ! copy_paste_order_for_woocommerce_admin_current_screen_has_enqueued_assets() ) {
 			return;
 		}
 
@@ -42,7 +42,7 @@ class Copy_Paste_Order_For_Woocommerce_Admin {
 			return;
 		}
 
-		$screens_to_assets = cpofw_admin_screens_with_assets();
+		$screens_to_assets = copy_paste_order_for_woocommerce_admin_screens_with_assets();
 
 		foreach ( $screens_to_assets as $screen => $assets ) {
 			if ( $current_screen->id !== $screen ) {
@@ -65,7 +65,7 @@ class Copy_Paste_Order_For_Woocommerce_Admin {
 				wp_enqueue_style(
 					"copy-paste-order-for-woocommerce-admin-{$asset['name']}",
 					$asset_base_url . "assets/dist/css/admin-{$asset['name']}.min.css",
-					cpofw_get_style_asset_dependencies( $asset_file['dependencies'] ),
+					copy_paste_order_for_woocommerce_get_style_asset_dependencies( $asset_file['dependencies'] ),
 					$asset_file['version'],
 					'all'
 				);
@@ -80,7 +80,7 @@ class Copy_Paste_Order_For_Woocommerce_Admin {
 	 * @return void
 	 */
 	public function enqueue_scripts() {
-		if ( ! cpofw_admin_current_screen_has_enqueued_assets() ) {
+		if ( ! copy_paste_order_for_woocommerce_admin_current_screen_has_enqueued_assets() ) {
 			return;
 		}
 
@@ -90,7 +90,7 @@ class Copy_Paste_Order_For_Woocommerce_Admin {
 			return;
 		}
 
-		$screens_to_assets = cpofw_admin_screens_with_assets();
+		$screens_to_assets = copy_paste_order_for_woocommerce_admin_screens_with_assets();
 
 		foreach ( $screens_to_assets as $screen => $assets ) {
 			if ( $current_screen->id !== $screen ) {
@@ -121,7 +121,7 @@ class Copy_Paste_Order_For_Woocommerce_Admin {
 				);
 
 				if ( ! empty( $asset['localized'] ) ) {
-					wp_localize_script( "copy-paste-order-for-woocommerce-admin-{$asset['name']}", 'CPOFW', cpofw_admin_screen_get_localized_data( $current_screen ) );
+					wp_localize_script( "copy-paste-order-for-woocommerce-admin-{$asset['name']}", 'CPOFW', copy_paste_order_for_woocommerce_admin_screen_get_localized_data( $current_screen ) );
 				}
 
 				wp_enqueue_script( "copy-paste-order-for-woocommerce-admin-{$asset['name']}" );

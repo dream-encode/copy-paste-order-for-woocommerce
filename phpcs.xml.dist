@@ -31,12 +31,11 @@
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<property name="prefixes" type="array">
-				<property name="prefixes" type="array" value="cpofw, copy_paste_order_for_woocommerce, Copy_Paste_Order_For_Woocommerce, dream-encode/copy-paste-order-for-woocommerce" />
 				<element value="cpofw"/>
 				<element value="copy_paste_order_for_woocommerce"/>
 				<element value="Copy_Paste_Order_For_Woocommerce"/>
 				<element value="CPOFW"/>
-				<element value="dream-encode/copy-paste-order-for-woocommerce"/>
+				<element value="copy-paste-order-for-woocommerce"/>
 				<element value="Dream_Encode\Copy_Paste_Order_WooCommerce"/>
 			</property>
 		</properties>

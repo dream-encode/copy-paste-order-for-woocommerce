@@ -9,6 +9,8 @@
 
 namespace Dream_Encode\Copy_Paste_Order_WooCommerce\Core\Abstracts;
 
+use WP_REST_Server;
+
 /**
  * Class Copy_Paste_Order_For_Woocommerce_API_Base
  *
@@ -58,7 +60,7 @@ abstract class Copy_Paste_Order_For_Woocommerce_Abstract_API {
 	 * @return void
 	 */
 	public function rest_api_init() {
-		if ( ! class_exists( '\WP_REST_Server' ) ) {
+		if ( ! class_exists( 'WP_REST_Server' ) ) {
 			return;
 		}
 
@@ -74,9 +76,9 @@ abstract class Copy_Paste_Order_For_Woocommerce_Abstract_API {
 	 * @return void
 	 */
 	public function rest_api_includes() {
-		include_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/rest-api/class-copy-paste-order-for-woocommerce-rest-authentication.php';
-		include_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/rest-api/class-copy-paste-order-for-woocommerce-rest-response.php';
-		include_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/abstracts/abstract-rest-controller.php';
+		require_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/rest-api/class-copy-paste-order-for-woocommerce-rest-authentication.php';
+		require_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/rest-api/class-copy-paste-order-for-woocommerce-rest-response.php';
+		require_once COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_PATH . 'includes/abstracts/abstract-rest-controller.php';
 	}
 
 	/**

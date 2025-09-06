@@ -6,6 +6,7 @@
 namespace Dream_Encode\Copy_Paste_Order_WooCommerce\Core\Abstracts;
 
 use WP_REST_Controller;
+
 use Dream_Encode\Copy_Paste_Order_WooCommerce\Core\RestApi\Copy_Paste_Order_For_Woocommerce_REST_Authentication;
 
 /**
@@ -19,7 +20,7 @@ class Copy_Paste_Order_For_Woocommerce_Abstract_REST_Controller extends WP_REST_
 	 * @access  public
 	 * @var     string   $namespace  The current namespace.
 	 */
-	public $namespace = 'dream-encode/copy-paste-order-for-woocommerce/v1';
+	public $namespace = 'copy-paste-order-for-woocommerce/v1';
 
 	/**
 	 * The current rest_base.

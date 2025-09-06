@@ -3,6 +3,8 @@
  * Main constants.
  */
 
+defined( 'ABSPATH' ) || exit;
+
 define( 'COPY_PASTE_ORDER_FOR_WOOCOMMERCE_PLUGIN_VERSION', '1.0.0' );
 define( 'COPY_PASTE_ORDER_FOR_WOOCOMMERCE_DATABASE_VERSION', '10' );
 

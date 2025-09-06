@@ -88,7 +88,7 @@ class Copy_Paste_Order_For_Woocommerce_Upgrader {
 	 * @return void
 	 */
 	protected static function run_update_callback_start( $callback ) {
-		cpofw_maybe_define_constant( 'CPOFW_UPDATING', true );
+		copy_paste_order_for_woocommerce_maybe_define_constant( 'CPOFW_UPDATING', true );
 	}
 
 	/**
@@ -130,7 +130,7 @@ class Copy_Paste_Order_For_Woocommerce_Upgrader {
 		// If we made it here nothing is running yet, lets set the transient now.
 		set_transient( 'cpofw_installing', 'yes', MINUTE_IN_SECONDS * 10 );
 
-		cpofw_maybe_define_constant( 'CPOFW_INSTALLING', true );
+		copy_paste_order_for_woocommerce_maybe_define_constant( 'CPOFW_INSTALLING', true );
 
 		self::create_tables();
 
@@ -280,13 +280,13 @@ class Copy_Paste_Order_For_Woocommerce_Upgrader {
 				);
 
 				foreach ( $update_callbacks as $update_callback ) {
-					if ( as_has_scheduled_action( 'cpofw_run_update_callback', array( $update_callback ), 'copy-paste-order-for-woocommerce' ) ) {
+					if ( as_has_scheduled_action( 'copy_paste_order_for_woocommerce_run_update_callback', array( $update_callback ), 'copy-paste-order-for-woocommerce' ) ) {
 						continue;
 					}
 
 					as_schedule_single_action(
 						time() + $loop,
-						'cpofw_run_update_callback',
+						'copy_paste_order_for_woocommerce_run_update_callback',
 						array(
 							$update_callback,
 						),
@@ -309,10 +309,10 @@ class Copy_Paste_Order_For_Woocommerce_Upgrader {
 		// After the callbacks finish, update the db version to the current plugin version.
 		$current_db_define_version = COPY_PASTE_ORDER_FOR_WOOCOMMERCE_DATABASE_VERSION;
 
-		if ( version_compare( $current_db_version, $current_db_define_version, '<' ) && ! as_has_scheduled_action( 'cpofw_update_db_to_current_version', array(), 'copy-paste-order-for-woocommerce' ) ) {
+		if ( version_compare( $current_db_version, $current_db_define_version, '<' ) && ! as_has_scheduled_action( 'copy_paste_order_for_woocommerce_update_db_to_current_version', array(), 'copy-paste-order-for-woocommerce' ) ) {
 			as_schedule_single_action(
 				time() + $loop,
-				'cpofw_update_db_to_current_version',
+				'copy_paste_order_for_woocommerce_update_db_to_current_version',
 				array(
 					$current_db_define_version,
 				),

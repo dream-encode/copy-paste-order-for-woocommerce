@@ -11,8 +11,11 @@ use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
 use WC_Order;
+
 use Dream_Encode\Copy_Paste_Order_WooCommerce\Core\RestApi\Copy_Paste_Order_For_Woocommerce_REST_Response;
 use Dream_Encode\Copy_Paste_Order_WooCommerce\Core\Abstracts\Copy_Paste_Order_For_Woocommerce_Abstract_REST_Controller;
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Class Copy_Paste_Order_For_Woocommerce_REST_Order_Controller
@@ -22,7 +25,6 @@ class Copy_Paste_Order_For_Woocommerce_REST_Order_Controller extends Copy_Paste_
 	 * Copy_Paste_Order_For_Woocommerce_REST_Order_Controller constructor.
 	 */
 	public function __construct() {
-		$this->namespace = 'dream-encode/copy-paste-order-for-woocommerce/v1';
 		$this->rest_base = 'order';
 	}
 
@@ -100,7 +102,7 @@ class Copy_Paste_Order_For_Woocommerce_REST_Order_Controller extends Copy_Paste_
 			$success = true;
 
 			$response->status = '200';
-			$response->data   = cpofw_get_json_order_data( $order );
+			$response->data   = copy_paste_order_for_woocommerce_get_json_order_data( $order );
 		} catch ( Exception $e ) {
 			$response->message = $e->getMessage();
 		}
@@ -136,7 +138,7 @@ class Copy_Paste_Order_For_Woocommerce_REST_Order_Controller extends Copy_Paste_
 				);
 			}
 
-			$result = cpofw_create_order_from_data( $order_data );
+			$result = copy_paste_order_for_woocommerce_create_order_from_data( $order_data );
 
 			if ( $result['success'] ) {
 				$success           = true;

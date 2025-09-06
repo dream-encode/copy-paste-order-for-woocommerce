@@ -6,6 +6,8 @@
  * @since   1.0.0
  */
 
+namespace Dream_Encode\Copy_Paste_Order_WooCommerce\Types;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -145,7 +147,7 @@ defined( 'ABSPATH' ) || exit;
  *     _cpofw_export: OrderExportData
  * }
  */
-final class OrderDataType {
+final class CPOFW_OrderDataType {
     /**
      * Private constructor to prevent instantiation.
      * This class is only for PHPStan type definitions.

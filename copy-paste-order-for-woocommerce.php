@@ -13,7 +13,7 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Copy & Paste Order for WooCommerce
- * Plugin URI:        https://dream-encode.com
+ * Plugin URI:        https://github.com/dream-encode/copy-paste-order-for-woocommerce
  * Description:       A small utility plugin to help copy WooCommerce orders from one site to another with just a couple of clicks.
  * Version:           1.0.0
  * Author:            David Baumwald

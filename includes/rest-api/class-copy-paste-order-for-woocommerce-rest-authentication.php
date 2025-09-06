@@ -123,8 +123,8 @@ class Copy_Paste_Order_For_Woocommerce_REST_Authentication {
 			return false;
 		}
 
-		$user = wp_unslash( $_SERVER['PHP_AUTH_USER'] );
-		$pass = wp_unslash( $_SERVER['PHP_AUTH_PW'] );
+		$user = sanitize_text_field( wp_unslash( $_SERVER['PHP_AUTH_USER'] ) );
+		$pass = sanitize_text_field( wp_unslash( $_SERVER['PHP_AUTH_PW'] ) );
 
 		$authenticated = wp_authenticate_application_password( null, $user, $pass );
 
@@ -149,7 +149,7 @@ class Copy_Paste_Order_For_Woocommerce_REST_Authentication {
 		$rest_prefix = trailingslashit( rest_get_url_prefix() );
 		$request_uri = esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
 
-		return str_contains( $request_uri, $rest_prefix . 'dream-encode/copy-paste-order-for-woocommerce' );
+		return str_contains( $request_uri, $rest_prefix . 'copy-paste-order-for-woocommerce' );
 	}
 
 	/**
@@ -176,7 +176,7 @@ class Copy_Paste_Order_For_Woocommerce_REST_Authentication {
 	 * Check permission of a user on a post type.
 	 *
 	 * @since  1.0.0
-	 * @param  string  $post_type   Post toye to check.
+	 * @param  string  $post_type   Post type to check.
 	 * @param  string  $permission  What context.
 	 * @param  int     $user_id     User to validate.
 	 * @return bool

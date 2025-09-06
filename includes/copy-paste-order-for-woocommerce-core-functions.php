@@ -17,7 +17,7 @@
  * @param  mixed   $value  Constant value.
  * @return void
  */
-function cpofw_maybe_define_constant( $name, $value ) {
+function copy_paste_order_for_woocommerce_maybe_define_constant( $name, $value ) {
 	if ( ! defined( $name ) ) {
 		define( $name, $value );
 	}
@@ -29,7 +29,7 @@ function cpofw_maybe_define_constant( $name, $value ) {
  * @since  1.0.0
  * @return array<string, array<array<string, mixed>>>
  */
-function cpofw_admin_screens_with_assets() {
+function copy_paste_order_for_woocommerce_admin_screens_with_assets() {
 	return array(
 		'settings_page_copy-paste-order-for-woocommerce-settings' => array(
 			array(
@@ -55,7 +55,7 @@ function cpofw_admin_screens_with_assets() {
  * @since  1.0.0
  * @return array<string, array<string, mixed>>
  */
-function cpofw_get_admin_screens_localization_data() {
+function copy_paste_order_for_woocommerce_get_admin_screens_localization_data() {
 	return array(
 		'edit-shop_order' => array(
 			'NONCES' => array(
@@ -73,7 +73,7 @@ function cpofw_get_admin_screens_localization_data() {
  * @since  1.0.0
  * @return string[]
  */
-function cpofw_get_wp_style_dependencies() {
+function copy_paste_order_for_woocommerce_get_wp_style_dependencies() {
 	return array(
 		'wp-components',
 	);
@@ -86,8 +86,8 @@ function cpofw_get_wp_style_dependencies() {
  * @param  string[]  $dependencies  Raw dependencies.
  * @return string[]
  */
-function cpofw_get_style_asset_dependencies( $dependencies ) {
-	$style_dependencies = cpofw_get_wp_style_dependencies();
+function copy_paste_order_for_woocommerce_get_style_asset_dependencies( $dependencies ) {
+	$style_dependencies = copy_paste_order_for_woocommerce_get_wp_style_dependencies();
 
 	$new_dependencies = array();
 
@@ -106,8 +106,8 @@ function cpofw_get_style_asset_dependencies( $dependencies ) {
  * @since  1.0.0
  * @return int
  */
-function cpofw_admin_current_screen_has_enqueued_assets() {
-	return count( cpofw_admin_current_screen_enqueued_assets() );
+function copy_paste_order_for_woocommerce_admin_current_screen_has_enqueued_assets() {
+	return count( copy_paste_order_for_woocommerce_admin_current_screen_enqueued_assets() );
 }
 
 /**
@@ -116,14 +116,14 @@ function cpofw_admin_current_screen_has_enqueued_assets() {
  * @since  1.0.0
  * @return array<mixed>
  */
-function cpofw_admin_current_screen_enqueued_assets() {
+function copy_paste_order_for_woocommerce_admin_current_screen_enqueued_assets() {
 	$current_screen = get_current_screen();
 
 	if ( ! $current_screen instanceof WP_Screen ) {
 		return array();
 	}
 
-	$assets = cpofw_admin_screens_with_assets();
+	$assets = copy_paste_order_for_woocommerce_admin_screens_with_assets();
 
 	return ! empty( $assets[ $current_screen->id ] ) ? $assets[ $current_screen->id ] : array();
 }
@@ -135,8 +135,8 @@ function cpofw_admin_current_screen_enqueued_assets() {
  * @param  WP_Screen  $screen  Screen to check.
  * @return mixed
  */
-function cpofw_admin_screen_get_localized_data( $screen ) {
-	$data = cpofw_get_admin_screens_localization_data();
+function copy_paste_order_for_woocommerce_admin_screen_get_localized_data( $screen ) {
+	$data = copy_paste_order_for_woocommerce_get_admin_screens_localization_data();
 
 	return ! empty( $data[ $screen->id ] ) ? $data[ $screen->id ] : array();
 }
@@ -149,7 +149,7 @@ function cpofw_admin_screen_get_localized_data( $screen ) {
  * @param  mixed   $default  Optional. Default value. Default false.
  * @return mixed
  */
-function cpofw_get_plugin_setting( $key, $default = false ) {
+function copy_paste_order_for_woocommerce_get_plugin_setting( $key, $default = false ) {
 	static $settings = false;
 
 	if ( false === $settings ) {
@@ -171,7 +171,7 @@ function cpofw_get_plugin_setting( $key, $default = false ) {
  * @param  string           $timezone_string  Optional. Timezone string. Default UTC.
  * @return string|false
  */
-function cpofw_get_mysql_datetime( $time = false, $timezone_string = 'UTC' ) {
+function copy_paste_order_for_woocommerce_get_mysql_datetime( $time = false, $timezone_string = 'UTC' ) {
 	if ( ! $time ) {
 		$time = time();
 	}
@@ -192,7 +192,7 @@ function cpofw_get_mysql_datetime( $time = false, $timezone_string = 'UTC' ) {
  * @param  WC_Order  $order  Order to get data.
  * @return array
  */
-function cpofw_get_complete_order_data( $order ) {
+function copy_paste_order_for_woocommerce_get_complete_order_data( $order ) {
 	$order_data = $order->get_data();
 
 	$date_properties = array(
@@ -282,7 +282,7 @@ function cpofw_get_complete_order_data( $order ) {
 
 	$order_data['_cpofw_export'] = array(
 		'version'         => COPY_PASTE_ORDER_FOR_WOOCOMMERCE_ORDER_JSON_VERSION,
-		'exported_at'     => cpofw_get_mysql_datetime(),
+		'exported_at'     => copy_paste_order_for_woocommerce_get_mysql_datetime(),
 		'source_site'     => get_site_url(),
 		'source_order_id' => $order->get_id(),
 	);
@@ -294,7 +294,7 @@ function cpofw_get_complete_order_data( $order ) {
 	 * @param  array     $order_data  The order data array.
 	 * @param  WC_Order  $order       The original order object.
 	 */
-	$order_data = apply_filters( 'dream-encode/copy-paste-order-for-woocommerce/export-order-data', $order_data, $order );
+	$order_data = apply_filters( 'copy-paste-order-for-woocommerce/export-order/order-data', $order_data, $order );
 
 	return $order_data;
 }
@@ -306,8 +306,8 @@ function cpofw_get_complete_order_data( $order ) {
  * @param  WC_Order  $order  Order to get data.
  * @return string
  */
-function cpofw_get_json_order_data( $order ) {
-	$order_data = cpofw_get_complete_order_data( $order );
+function copy_paste_order_for_woocommerce_get_json_order_data( $order ) {
+	$order_data = copy_paste_order_for_woocommerce_get_complete_order_data( $order );
 
 	/**
 	 * Filter the order data before JSON encoding.
@@ -316,7 +316,7 @@ function cpofw_get_json_order_data( $order ) {
 	 * @param  array     $order_data  The order data array.
 	 * @param  WC_Order  $order       The original order object.
 	 */
-	$order_data = apply_filters( 'dream-encode/copy-paste-order-for-woocommerce/before-json-encode', $order_data, $order );
+	$order_data = apply_filters( 'copy-paste-order-for-woocommerce/json/before-encode', $order_data, $order );
 
 	$json_data = wp_json_encode( $order_data, JSON_PRETTY_PRINT );
 
@@ -328,7 +328,7 @@ function cpofw_get_json_order_data( $order ) {
 	 * @param  array     $order_data  The order data array.
 	 * @param  WC_Order  $order       The original order object.
 	 */
-	$json_data = apply_filters( 'dream-encode/copy-paste-order-for-woocommerce/json-encoded-data', (string) $json_data, $order_data, $order );
+	$json_data = apply_filters( 'copy-paste-order-for-woocommerce/json/after-encode', (string) $json_data, $order_data, $order );
 
 	return $json_data;
 }
@@ -340,7 +340,7 @@ function cpofw_get_json_order_data( $order ) {
  * @param  array  $order_data  Order data to validate.
  * @return array{valid: bool, errors: string[]}
  */
-function cpofw_validate_order_data( $order_data ) {
+function copy_paste_order_for_woocommerce_validate_order_data( $order_data ) {
 	$errors = array();
 
 	if ( ! isset( $order_data['_cpofw_export'] ) ) {
@@ -378,7 +378,7 @@ function cpofw_validate_order_data( $order_data ) {
  * @param  array  $order_data  Order data to create from.
  * @return array{success: bool, order_id?: int, edit_url?: string, message: string}
  */
-function cpofw_create_order_from_data( $order_data ) {
+function copy_paste_order_for_woocommerce_create_order_from_data( $order_data ) {
 	try {
 		/**
 		 * Filter the order data before validation and import.
@@ -386,9 +386,9 @@ function cpofw_create_order_from_data( $order_data ) {
 		 * @since  1.0.0
 		 * @param  array  $order_data  The order data array from JSON.
 		 */
-		$order_data = apply_filters( 'dream-encode/copy-paste-order-for-woocommerce/import-order/before-validation', $order_data );
+		$order_data = apply_filters( 'copy-paste-order-for-woocommerce/import-order/before-validation', $order_data );
 
-		$validation = cpofw_validate_order_data( $order_data );
+		$validation = copy_paste_order_for_woocommerce_validate_order_data( $order_data );
 
 		if ( ! $validation['valid'] ) {
 			return array(
@@ -435,7 +435,7 @@ function cpofw_create_order_from_data( $order_data ) {
 					$date_value = $order_data[ $date_property ];
 
 					if ( is_string( $date_value ) ) {
-						$date_value = cpofw_get_mysql_datetime( strtotime( $date_value ) );
+						$date_value = copy_paste_order_for_woocommerce_get_mysql_datetime( strtotime( $date_value ) );
 					} elseif ( is_array( $date_value ) && isset( $date_value['date'] ) ) {
 						$date_value = $date_value['date'];
 					}
@@ -462,7 +462,7 @@ function cpofw_create_order_from_data( $order_data ) {
 		 * @param  WC_Order  $order       The order object being created.
 		 * @param  array     $order_data  The order data array from JSON.
 		 */
-		$order = apply_filters( 'dream-encode/copy-paste-order-for-woocommerce/import-order/before-items', $order, $order_data );
+		$order = apply_filters( 'copy-paste-order-for-woocommerce/import-order/before-items', $order, $order_data );
 
 		if ( isset( $order_data['line_items'] ) && is_array( $order_data['line_items'] ) ) {
 			foreach ( $order_data['line_items'] as $line_item_data ) {
@@ -517,7 +517,7 @@ function cpofw_create_order_from_data( $order_data ) {
 				 * @param  array                  $line_item_data  The line item data from JSON.
 				 * @param  WC_Order               $order           The order object.
 				 */
-				$item = apply_filters( 'dream-encode/copy-paste-order-for-woocommerce/import-line-item', $item, $line_item_data, $order );
+				$item = apply_filters( 'copy-paste-order-for-woocommerce/import-order/import-line-item', $item, $line_item_data, $order );
 
 				$order->add_item( $item );
 			}
@@ -558,7 +558,7 @@ function cpofw_create_order_from_data( $order_data ) {
 				 * @param  array                   $shipping_data  The shipping data from JSON.
 				 * @param  WC_Order                $order          The order object.
 				 */
-				$item = apply_filters( 'dream-encode/copy-paste-order-for-woocommerce/import-shipping-item', $item, $shipping_data, $order );
+				$item = apply_filters( 'copy-paste-order-for-woocommerce/import-order/import-shipping-item', $item, $shipping_data, $order );
 
 				$order->add_item( $item );
 			}
@@ -598,7 +598,7 @@ function cpofw_create_order_from_data( $order_data ) {
 				 * @param  array              $fee_data  The fee data from JSON.
 				 * @param  WC_Order           $order     The order object.
 				 */
-				$item = apply_filters( 'dream-encode/copy-paste-order-for-woocommerce/import-fee-item', $item, $fee_data, $order );
+				$item = apply_filters( 'copy-paste-order-for-woocommerce/import-order/import-fee-item', $item, $fee_data, $order );
 
 				$order->add_item( $item );
 			}
@@ -651,7 +651,7 @@ function cpofw_create_order_from_data( $order_data ) {
 				 * @param  array                 $coupon_data  The coupon data from JSON.
 				 * @param  WC_Order              $order        The order object.
 				 */
-				$item = apply_filters( 'dream-encode/copy-paste-order-for-woocommerce/import-coupon-item', $item, $coupon_data, $order );
+				$item = apply_filters( 'copy-paste-order-for-woocommerce/import-order/import-coupon-item', $item, $coupon_data, $order );
 
 				$order->add_item( $item );
 			}
@@ -707,7 +707,7 @@ function cpofw_create_order_from_data( $order_data ) {
 				 * @param  array              $tax_data  The tax data from JSON.
 				 * @param  WC_Order           $order     The order object.
 				 */
-				$item = apply_filters( 'dream-encode/copy-paste-order-for-woocommerce/import-tax-item', $item, $tax_data, $order );
+				$item = apply_filters( 'copy-paste-order-for-woocommerce/import-order/import-tax-item', $item, $tax_data, $order );
 
 				$order->add_item( $item );
 			}
@@ -755,7 +755,7 @@ function cpofw_create_order_from_data( $order_data ) {
 		 * @param  WC_Order  $order       The order object with all items added.
 		 * @param  array     $order_data  The complete order data array from JSON.
 		 */
-		$order = apply_filters( 'dream-encode/copy-paste-order-for-woocommerce/import-order/before-save', $order, $order_data );
+		$order = apply_filters( 'copy-paste-order-for-woocommerce/import-order/before-save', $order, $order_data );
 
 		$order->calculate_totals();
 		$order->save();
@@ -781,7 +781,7 @@ function cpofw_create_order_from_data( $order_data ) {
 		 * @param  WC_Order  $order      The created order object.
 		 * @param  array     $order_data The complete order data array from JSON.
 		 */
-		do_action( 'cpofw_order_imported', $order, $order_data );
+		do_action( 'copy-paste-order-for-woocommerce/import-order/after-save', $order, $order_data );
 
 		return array(
 			'success'  => true,
