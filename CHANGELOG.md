@@ -1,6 +1,6 @@
 # Changelog
 
-## [NEXT_VERSION] - [UNRELEASED]
+## [1.0.4] - 2025-09-30
 * ENH: Updated readme content.
 * ENH: Add screenshots.
 * BUG: AJAX response parsing.
