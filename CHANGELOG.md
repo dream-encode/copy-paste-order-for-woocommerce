@@ -1,7 +1,7 @@
 # Changelog
 
 ## [NEXT_VERSION] - [UNRELEASED]
-* BUG: Example fix description.
+* BUG: Remove CSS comments.
 
 ## [1.0.1] - 2025-09-30
 * TSK: Bump version for testing deploy.
