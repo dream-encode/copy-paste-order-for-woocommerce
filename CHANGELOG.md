@@ -1,4 +1,4 @@
 # Changelog
 
-## [1.0.0] - 2025-09-30
+## [NEXT_VERSION] - [UNRELEASED]
 * Initial release.

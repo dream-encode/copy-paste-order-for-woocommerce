@@ -9,7 +9,6 @@ tests/resultCache*
 composer.*
 package.json
 php*.dist
-yarn.lock
 postcss.config.js
 webpack.config.js
 /admin/assets/src
