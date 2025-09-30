@@ -37,15 +37,7 @@ tr:hover .cpofw-copy-icon {
 	}
 }
 
-.cpofw-paste-order-button {
-	margin-left: 10px;
-
-	&:hover {
-		background-color: #f0f0f1;
-		border-color: #0a4b78;
-		color: #0a4b78;
-	}
-}
+/* .cpofw-paste-order-button now uses native anchor with .page-title-action class */
 
 .cpofw-copy-order-modal,
 .cpofw-paste-order-modal {

@@ -9,21 +9,20 @@ import {
 	__experimentalDivider as Divider,
 	Icon
 } from '@wordpress/components'
+
 import {
 	receipt,
 	people,
-	shipping,
 	tag
 } from '@wordpress/icons'
+
+const formatPrice = ( price ) => {
+	return `$${ parseFloat( price ).toFixed( 2 ) }`
+}
 
 const OrderSummary = ( { orderData } ) => {
 	if ( ! orderData ) {
 		return null
-	}
-
-	const formatPrice = ( price ) => {
-		// Simple price formatting - in a real implementation you'd want to use WooCommerce's formatting
-		return `$${parseFloat( price ).toFixed( 2 )}`
 	}
 
 	const formatDate = ( dateString ) => {
@@ -60,7 +59,6 @@ const OrderSummary = ( { orderData } ) => {
 			</CardHeader>
 			<CardBody>
 				<VStack spacing={ 3 }>
-					{/* Order Details */}
 					<div className="cpofw-order-details">
 						<HStack justify="space-between">
 							<Text weight="600">
@@ -95,7 +93,6 @@ const OrderSummary = ( { orderData } ) => {
 
 					<Divider />
 
-					{/* Customer Information */}
 					{ ( orderData.billing || orderData.shipping ) && (
 						<>
 							<HStack>
@@ -126,7 +123,6 @@ const OrderSummary = ( { orderData } ) => {
 						</>
 					) }
 
-					{/* Line Items */}
 					{ orderData.line_items && orderData.line_items.length > 0 && (
 						<>
 							<HStack>
@@ -160,7 +156,6 @@ const OrderSummary = ( { orderData } ) => {
 						</>
 					) }
 
-					{/* Metadata Count */}
 					{ orderData.meta_data && orderData.meta_data.length > 0 && (
 						<>
 							<Divider />
