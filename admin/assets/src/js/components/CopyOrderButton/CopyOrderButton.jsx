@@ -8,12 +8,11 @@ import { apiCopyOrder } from '@/utils/api'
 
 const CopyOrderButton = ( { orderId, autoOpen = false } ) => {
 	const [ isModalOpen, setIsModalOpen ] = useState( false )
-	const [ isLoading, setIsLoading ] = useState( false )
-	const [ orderData, setOrderData ] = useState( null )
-	const [ error, setError ] = useState( null )
-	const [ copied, setCopied ] = useState( false )
+	const [ isLoading, setIsLoading ]     = useState( false )
+	const [ orderData, setOrderData ]     = useState( null )
+	const [ error, setError ]             = useState( null )
+	const [ copied, setCopied ]           = useState( false )
 
-	// Auto-open modal if autoOpen prop is true
 	useEffect( () => {
 		if ( autoOpen ) {
 			openModal()
@@ -33,7 +32,7 @@ const CopyOrderButton = ( { orderId, autoOpen = false } ) => {
 			} else {
 				setError( response.message || __( 'Failed to load order data.', 'copy-paste-order-for-woocommerce' ) )
 			}
-		} catch ( err ) {
+		} catch {
 			setError( __( 'An error occurred while loading the order.', 'copy-paste-order-for-woocommerce' ) )
 		} finally {
 			setIsLoading( false )
@@ -48,18 +47,21 @@ const CopyOrderButton = ( { orderId, autoOpen = false } ) => {
 	}
 
 	const copyToClipboard = async () => {
-		if ( ! orderData ) return
+		if ( ! orderData ) {
+			return
+		}
 
 		try {
 			const orderJson = JSON.stringify( orderData, null, 2 )
+
 			await navigator.clipboard.writeText( orderJson )
+
 			setCopied( true )
 
-			// Auto-close modal after successful copy
 			setTimeout( () => {
 				closeModal()
 			}, 1500 )
-		} catch ( err ) {
+		} catch {
 			setError( __( 'Failed to copy to clipboard.', 'copy-paste-order-for-woocommerce' ) )
 		}
 	}

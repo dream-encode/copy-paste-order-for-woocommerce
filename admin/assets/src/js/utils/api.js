@@ -14,7 +14,7 @@ export const apiCopyOrder = async ( orderId ) => {
 		}
 	)
 
-	return await response.json()
+	return response
 }
 
 /**
@@ -29,9 +29,9 @@ export const apiPasteOrder = async ( orderData ) => {
 		{
 			path: '/copy-paste-order-for-woocommerce/v1/order/paste',
 			method: 'POST',
-			body: JSON.stringify( orderData ),
+			data: orderData,
 		}
 	)
 
-	return await response.json()
+	return response
 }

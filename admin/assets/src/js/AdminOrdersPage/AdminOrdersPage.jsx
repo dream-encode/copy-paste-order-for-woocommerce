@@ -1,6 +1,5 @@
 import { __ } from '@wordpress/i18n'
 import { useEffect } from '@wordpress/element'
-import domReady from '@wordpress/dom-ready'
 
 import CopyOrderButton from '@/components/CopyOrderButton/CopyOrderButton'
 import PasteOrderButton from '@/components/PasteOrderButton/PasteOrderButton'
@@ -112,10 +111,7 @@ const AdminOrdersPage = () => {
 					return
 				}
 
-				let orderCell = row.querySelector( '.order_number' ) ||
-								row.querySelector( '.column-order_number' ) ||
-								row.querySelector( 'td:not(.hidden)' ) ||
-								row.querySelector( 'td' )
+				let orderCell = row.querySelector( '.order_number' ) || row.querySelector( '.column-order_number' ) || row.querySelector( 'td:not(.hidden)' ) || row.querySelector( 'td' )
 
 				if ( ! orderCell ) {
 					return
@@ -123,12 +119,12 @@ const AdminOrdersPage = () => {
 
 				const copyIcon = document.createElement( 'span' )
 
-				copyIcon.className       = 'cpofw-copy-icon'
-				copyIcon.dataset.orderId = orderId
-				copyIcon.title           = 'Copy Order'
-				copyIcon.innerHTML       = '📋'
+				copyIcon.className        = 'cpofw-copy-icon'
+				copyIcon.dataset.orderId  = orderId
+				copyIcon.title            = __( 'Copy Order', 'copy-paste-order-for-woocommerce' )
+				copyIcon.innerHTML        = '📋'
 				copyIcon.style.marginLeft = '8px'
-				copyIcon.style.cursor    = 'pointer'
+				copyIcon.style.cursor     = 'pointer'
 
 				copyIcon.addEventListener( 'click', ( event ) => {
 					event.preventDefault()
@@ -148,7 +144,7 @@ const AdminOrdersPage = () => {
 
 		const observer = new MutationObserver( ( mutations ) => {
 			mutations.forEach( ( mutation ) => {
-				if ( mutation.type === 'childList' && mutation.addedNodes.length > 0 ) {
+				if ( 'childList' === mutation.type && mutation.addedNodes.length > 0 ) {
 					initializePasteButton()
 
 					setTimeout( addCopyIcons, 100 )
