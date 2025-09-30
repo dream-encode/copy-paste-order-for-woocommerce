@@ -1,4 +1,3 @@
-// Copy icon styling in billing column
 .cpofw-copy-icon {
 	display: none;
 	margin-left: 8px;
@@ -12,7 +11,6 @@
 	}
 }
 
-// Show copy icon on row hover
 tr:hover .cpofw-copy-icon {
 	display: inline;
 }
@@ -186,12 +184,10 @@ tr:hover .cpofw-copy-icon {
 	}
 }
 
-// Ensure paste button container is positioned correctly
 #cpofw-paste-order-container {
 	display: inline-block;
 }
 
-// Loading states
 .cpofw-loading {
 	opacity: 0.6;
 	pointer-events: none;
@@ -208,7 +204,6 @@ tr:hover .cpofw-copy-icon {
 	}
 }
 
-// Success states
 .components-notice.is-success {
 	border-left-color: #00a32a;
 
@@ -217,7 +212,6 @@ tr:hover .cpofw-copy-icon {
 	}
 }
 
-// Error states
 .components-notice.is-error {
 	border-left-color: #d63638;
 
@@ -226,7 +220,6 @@ tr:hover .cpofw-copy-icon {
 	}
 }
 
-// Responsive design
 @media (max-width: 768px) {
 	.cpofw-copy-order-modal,
 	.cpofw-paste-order-modal {
