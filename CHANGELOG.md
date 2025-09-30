@@ -1,5 +1,8 @@
 # Changelog
 
+## [NEXT_VERSION] - [UNRELEASED]
+* BUG: Example fix description.
+
 ## [1.0.1] - 2025-09-30
 * TSK: Bump version for testing deploy.
 
