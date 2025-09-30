@@ -1,6 +1,6 @@
 # Changelog
 
-## [NEXT_VERSION] - [UNRELEASED]
+## [1.0.3] - 2025-09-30
 * TSK: Test live deploy to WP.org.
 
 ## [1.0.2] - 2025-09-30
