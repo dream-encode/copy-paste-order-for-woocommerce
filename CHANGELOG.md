@@ -1,6 +1,6 @@
 # Changelog
 
-## [NEXT_VERSION] - [UNRELEASED]
+## [1.0.2] - 2025-09-30
 * BUG: Remove CSS comments.
 
 ## [1.0.1] - 2025-09-30
