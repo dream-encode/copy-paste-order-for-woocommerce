@@ -1,7 +1,10 @@
 # Changelog
 
 ## [NEXT_VERSION] - [UNRELEASED]
-* BUG: Example fix description.
+* ENH: Updated readme content.
+* ENH: Add screenshots.
+* BUG: AJAX response parsing.
+* BUG: Fix paste order button styling.
 
 ## [1.0.3] - 2025-09-30
 * TSK: Test live deploy to WP.org.
