@@ -1,6 +1,6 @@
 {
   "name": "copy-paste-order-for-woocommerce",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A small utility plugin to help copy WooCommerce orders from one site to another with just a couple of clicks.",
   "author": "David Baumwald <david@dream-encode.com>",
   "license": "GPL-2.0-or-later",

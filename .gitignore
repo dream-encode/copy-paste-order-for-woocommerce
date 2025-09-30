@@ -1,7 +1,5 @@
 node_modules
-yarn.lock
 vendor
-composer.lock
 tests
 .cache
 admin/assets/dist
