@@ -1,7 +1,7 @@
 # Changelog
 
 ## [NEXT_VERSION] - [UNRELEASED]
-* BUG: Example fix description.
+* TSK: Test live deploy to WP.org.
 
 ## [1.0.2] - 2025-09-30
 * BUG: Remove CSS comments.
